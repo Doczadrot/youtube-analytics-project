@@ -1,7 +1,7 @@
 from src.channel import Channel
 
 if __name__ == '__main__':
-    # Замените "ВАШ_API_КЛЮЧ" на ваш реальный API ключ
+    
     api_key = "AIzaSyDwuxvkIC_OTUYnAiBOAsgUDtAEBb6iuug"
     moscowpython = Channel('UC-OVMPlMA3-YCIeg4z5z23A', api_key)
     moscowpython.print_info()

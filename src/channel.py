@@ -52,4 +52,3 @@ class Channel:
         with open(filename, 'w', encoding='utf-8') as file:
             json.dump(channel_info, file, ensure_ascii=False, indent=4)
 
-# main.py остается без изменений

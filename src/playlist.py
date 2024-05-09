@@ -1,6 +1,7 @@
 import os
 from googleapiclient.discovery import build
 import datetime
+import re
 
 class PlayList:
     """Класс для работы с плейлистами YouTube."""
@@ -79,16 +80,16 @@ class Video:
         self.like_count = int(video_item['statistics']['likeCount'])
         self.duration = parse_duration(video_item['contentDetails']['duration'])
 
-def parse_duration(duration_str):
+def parse_duration(s):
     """Функция для преобразования строки продолжительности из API в объект datetime.timedelta"""
-    if not duration_str:
-        return datetime.timedelta()
-
-    duration_components = duration_str.split("PT")[1].split("M")
-    hours = int(duration_components[0]) if len(duration_components) > 0 and duration_components[0] else 0
-    minutes = int(duration_components[1][:-1]) if len(duration_components) > 1 and duration_components[1][:-1] else 0
-
-    # Проверка длины строки перед доступом к последнему символу
-    seconds = int(duration_components[1][-1]) if len(duration_components) > 1 and len(duration_components[1]) > 1 and duration_components[1][-1].isdigit() else 0
-
-    return datetime.timedelta(hours=hours, minutes=minutes, seconds=seconds)
+    def _to_int(raw_s, pl):
+        if raw_s:
+            [_r] = raw_s
+            _r = int(_r.replace(pl, ""))
+        else:
+            _r = 0
+        return _r
+    minutes = _to_int(re.findall("\d+M", s), "M")
+    second = _to_int(re.findall("\d+S", s), "S")
+    hours = _to_int(re.findall("\d+H", s), "H")
+    return datetime.timedelta(hours=hours, minutes=minutes, seconds=second)
